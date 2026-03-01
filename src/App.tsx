@@ -305,7 +305,7 @@ export default function App() {
               <div className={`flex items-center group border-b-2 border-[#f0eadd] ${sizes.minH} ${sizes.py} shrink-0`}>
                 <span className={`${sizes.text} text-[#A67C52] w-10 md:w-14 shrink-0 font-bold leading-none`}>{visibleAnnouncements.length + 1}.</span>
                 <p className={`flex-1 ${sizes.text} text-[#e05a5a] leading-relaxed mt-1 break-keep font-bold tracking-wide`}>
-                  {"모두 수고 많았어요!".split('').map((char, i) => (
+                  {"차 조심, 낯선 사람 조심!".split('').map((char, i) => (
                     <span
                       key={i}
                       className="inline-block animate-bounce-in"
