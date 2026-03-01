@@ -86,8 +86,11 @@ export default function App() {
     }, 0);
   };
 
+  const normalizeAnnouncementText = (text: string) => text.replace(/(\d)ㅔ/g, '$1p');
+
   const handleUpdate = (id: string, text: string) => {
-    setAnnouncements(announcements.map(a => a.id === id ? { ...a, text } : a));
+    const normalizedText = normalizeAnnouncementText(text);
+    setAnnouncements(announcements.map(a => a.id === id ? { ...a, text: normalizedText } : a));
   };
 
   const handleDelete = (index: number) => {
