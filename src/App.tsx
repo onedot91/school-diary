@@ -7,6 +7,22 @@ interface Announcement {
   text: string;
 }
 
+const weekdayNames = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+
+const formatDateForDisplay = (dateText: string) => {
+  const match = dateText.match(/(\d{4})\D+(\d{1,2})\D+(\d{1,2})/);
+  if (!match) return dateText;
+
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const parsed = new Date(year, month - 1, day);
+
+  if (Number.isNaN(parsed.getTime())) return dateText;
+
+  return `${year}년 ${month}월 ${day}일 ${weekdayNames[parsed.getDay()]}`;
+};
+
 const playSound = (type: 'pop' | 'tada') => {
   try {
     const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
@@ -44,10 +60,7 @@ export default function App() {
   const [isEditing, setIsEditing] = useState(true);
   const [date, setDate] = useState(() => {
     const today = new Date();
-    const days = ['일', '월', '화', '수', '목', '금', '토'];
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    return `${today.getFullYear()}-${month}-${day} (${days[today.getDay()]})`;
+    return `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일 ${weekdayNames[today.getDay()]}`;
   });
   const [announcements, setAnnouncements] = useState<Announcement[]>([
     { id: Date.now().toString(), text: '' }
@@ -176,6 +189,7 @@ export default function App() {
   };
 
   const sizes = getSizeClasses(totalItems);
+  const displayDate = formatDateForDisplay(date);
 
   return (
     <div className="h-screen p-3 md:p-6 text-[#2c1e16] flex flex-col items-center overflow-hidden">
@@ -260,7 +274,7 @@ export default function App() {
                 className="bg-[#fcf8f2] border-b-2 border-[#5C8D6D] focus:outline-none px-4 py-1.5 w-[20rem] md:w-[30rem] text-center rounded-xl text-[#2c1e16] transition-colors"
               />
             ) : (
-              <span className="px-4 py-1.5 bg-[#fcf8f2] rounded-xl border border-[#e8e0d5] text-[#2c1e16] shadow-sm">{date}</span>
+              <span className="px-4 py-1.5 bg-[#fcf8f2] rounded-xl border border-[#e8e0d5] text-[#2c1e16] shadow-sm">{displayDate}</span>
             )}
           </div>
 
