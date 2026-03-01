@@ -58,7 +58,10 @@ export default function App() {
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   useEffect(() => {
-    const saved = localStorage.getItem('school-announcements-v4');
+    // Ensure stale persistent data from older versions does not get restored.
+    localStorage.removeItem('school-announcements-v4');
+
+    const saved = sessionStorage.getItem('school-announcements-v4');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -74,7 +77,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('school-announcements-v4', JSON.stringify({ date, announcements }));
+    sessionStorage.setItem('school-announcements-v4', JSON.stringify({ date, announcements }));
   }, [date, announcements]);
 
   const handleAdd = () => {
